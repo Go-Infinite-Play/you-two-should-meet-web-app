@@ -109,7 +109,10 @@ export function MatchmakerFlow({ token }: { token: string }) {
       const res = await fetch(`/api/matchmaker/${token}/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          matchmaker_phone: assignment.matchmaker_phone,
+        }),
       });
       if (!res.ok) {
         const json = await res.json();

@@ -38,10 +38,24 @@ export async function POST(
     .select()
     .single();
 
+  // Look up matchmaker_user_id for points (needed in both branches)
+  let matchmakerUserId: string | null = null;
+  try {
+    const { data: assignment } = await supabase
+      .from("matchmaker_assignments")
+      .select("matchmaker_user_id")
+      .eq("id", introduction.assignment_id)
+      .single();
+    matchmakerUserId = assignment?.matchmaker_user_id || null;
+  } catch {
+    // Non-critical
+  }
+
   let connection = null;
 
-  // If mutual match, create connection
   if (isMutualMatch) {
+    // MUTUAL MATCH — both said yes!
+
     // Get single's info for the connection
     const { data: single } = await supabase
       .from("users")
@@ -57,6 +71,8 @@ export async function POST(
           single_id: introduction.single_id,
           match_name: introduction.candidate_name,
           match_phone: introduction.candidate_phone,
+          match_description: introduction.candidate_description,
+          reason_why_great: introduction.reason_why_great,
           matchmaker_name: introduction.matchmaker_name,
         })
         .select()
@@ -73,33 +89,56 @@ export async function POST(
       subtitle: `${introduction.matchmaker_name} connected you with ${introduction.candidate_name}`,
     });
 
-    // Award points to matchmaker (fire-and-forget)
-    try {
-      const { data: assignment } = await supabase
-        .from("matchmaker_assignments")
-        .select("matchmaker_user_id")
-        .eq("id", introduction.assignment_id)
-        .single();
-
-      if (assignment?.matchmaker_user_id) {
+    // Award points — mutual_match
+    if (matchmakerUserId) {
+      try {
         await supabase.functions.invoke("award-points", {
           body: {
-            matchmaker_user_id: assignment.matchmaker_user_id,
+            matchmaker_user_id: matchmakerUserId,
             event: "mutual_match",
           },
         });
+      } catch {
+        // Don't fail if points award fails
       }
-    } catch {
-      // Don't fail if points award fails
     }
   } else {
-    // Candidate accepted but single hasn't decided yet
+    // CANDIDATE ACCEPTED — single hasn't responded yet
+
+    // Activity event
     await supabase.from("activity_events").insert({
       user_id: introduction.single_id,
-      icon: "bell.badge",
+      icon: "eyes",
       title: `${introduction.candidate_name} is interested!`,
-      subtitle: `${introduction.matchmaker_name}'s recommendation said yes`,
+      subtitle: `Open the app to see the introduction from ${introduction.matchmaker_name}`,
     });
+
+    // Send push to single
+    try {
+      await supabase.functions.invoke("send-push", {
+        body: {
+          user_id: introduction.single_id,
+          type: "candidate_accepted",
+          data: { candidate_name: introduction.candidate_name },
+        },
+      });
+    } catch {
+      // Don't fail if push fails
+    }
+
+    // Award points — candidate_accepted
+    if (matchmakerUserId) {
+      try {
+        await supabase.functions.invoke("award-points", {
+          body: {
+            matchmaker_user_id: matchmakerUserId,
+            event: "candidate_accepted",
+          },
+        });
+      } catch {
+        // Don't fail if points award fails
+      }
+    }
   }
 
   return NextResponse.json({

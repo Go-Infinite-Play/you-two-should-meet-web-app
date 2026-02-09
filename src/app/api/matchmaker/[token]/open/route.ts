@@ -29,6 +29,19 @@ export async function POST(
       title: `${data.matchmaker_name} opened your invite`,
       subtitle: "They're checking out what you're looking for",
     });
+
+    // Send push notification to single (fire-and-forget)
+    try {
+      await supabase.functions.invoke("send-push", {
+        body: {
+          user_id: data.single_id,
+          type: "matchmaker_opened",
+          data: { matchmaker_name: data.matchmaker_name },
+        },
+      });
+    } catch {
+      // Don't fail if push fails
+    }
   }
 
   return NextResponse.json({ success: true });

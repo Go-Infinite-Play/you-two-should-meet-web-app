@@ -27,6 +27,19 @@ export async function POST(
       title: `${data.matchmaker_name} is looking`,
       subtitle: "They're thinking of someone for you",
     });
+
+    // Send push notification to single (fire-and-forget)
+    try {
+      await supabase.functions.invoke("send-push", {
+        body: {
+          user_id: data.single_id,
+          type: "matchmaker_looking",
+          data: { matchmaker_name: data.matchmaker_name },
+        },
+      });
+    } catch {
+      // Don't fail if push fails
+    }
   }
 
   return NextResponse.json({ success: true });
