@@ -20,16 +20,14 @@ export default async function Image() {
           fontFamily: "system-ui, sans-serif",
         }}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "16px",
-            marginBottom: "24px",
-          }}
-        >
-          <div style={{ fontSize: "64px" }}>💕</div>
-        </div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://youtwoshouldmeet.app/icon.png"
+          alt=""
+          width={160}
+          height={160}
+          style={{ marginBottom: "28px" }}
+        />
         <div
           style={{
             fontSize: "56px",
@@ -38,7 +36,7 @@ export default async function Image() {
             textAlign: "center",
             lineHeight: 1.2,
             maxWidth: "900px",
-            marginBottom: "20px",
+            marginBottom: "16px",
           }}
         >
           You Two Should Meet
@@ -53,22 +51,6 @@ export default async function Image() {
           }}
         >
           Your friends know you better than an algorithm
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            marginTop: "40px",
-            background: "linear-gradient(135deg, #E8636F, #F2949B)",
-            color: "white",
-            padding: "16px 40px",
-            borderRadius: "20px",
-            fontSize: "22px",
-            fontWeight: 700,
-          }}
-        >
-          The anti-dating app
         </div>
       </div>
     ),

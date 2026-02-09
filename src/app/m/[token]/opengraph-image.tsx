@@ -20,7 +20,14 @@ export default async function Image() {
           fontFamily: "system-ui, sans-serif",
         }}
       >
-        <div style={{ fontSize: "80px", marginBottom: "20px" }}>🤝</div>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="https://youtwoshouldmeet.app/icon.png"
+          alt=""
+          width={140}
+          height={140}
+          style={{ marginBottom: "24px" }}
+        />
         <div
           style={{
             fontSize: "48px",
@@ -29,7 +36,7 @@ export default async function Image() {
             textAlign: "center",
             lineHeight: 1.2,
             maxWidth: "900px",
-            marginBottom: "20px",
+            marginBottom: "16px",
           }}
         >
           You&apos;ve been invited to be a matchmaker!
@@ -43,20 +50,7 @@ export default async function Image() {
             lineHeight: 1.4,
           }}
         >
-          A friend trusts you to find them someone great. Open the link to see what they&apos;re looking for.
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            marginTop: "36px",
-            fontSize: "20px",
-            color: "#E8636F",
-            fontWeight: 600,
-          }}
-        >
-          💕 You Two Should Meet
+          A friend trusts you to find them someone great
         </div>
       </div>
     ),
