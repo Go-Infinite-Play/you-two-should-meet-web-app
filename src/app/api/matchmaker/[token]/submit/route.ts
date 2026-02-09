@@ -91,10 +91,15 @@ export async function POST(
 
     const candidateLink = `https://youtwoshouldmeet.app/c/${candidateInviteToken}`;
 
+    // Prefer Messaging Service SID (required for A2P 10DLC compliance)
+    const messagingServiceSid = process.env.TWILIO_MESSAGING_SERVICE_SID;
+
     await twilioClient.messages.create({
       to: toE164(candidate_phone),
-      from: process.env.TWILIO_FROM_NUMBER!,
       body: `Hey ${candidate_name}! ${assignment.matchmaker_name} thinks you'd be great for a friend of theirs. See what they said: ${candidateLink}\n\nReply STOP to opt out.`,
+      ...(messagingServiceSid
+        ? { messagingServiceSid }
+        : { from: process.env.TWILIO_FROM_NUMBER! }),
     });
 
     // Log the SMS
