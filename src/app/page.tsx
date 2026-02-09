@@ -524,6 +524,78 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ MATCHMAKER SECTION ═══ */}
+      <section className="relative px-6 py-20 sm:py-28">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.03] to-transparent" />
+
+        <div className="relative mx-auto max-w-5xl">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={scrollReveal}
+            className="mb-14 text-center"
+          >
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent/60">
+              Born to set people up?
+            </p>
+            <h2 className="mb-5 font-display text-4xl text-text-primary sm:text-5xl">
+              Some people just <em className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">know</em>
+              <br />who belongs together
+            </h2>
+            <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
+              If you&apos;re the mom who&apos;s always got someone in mind, the friend who sees
+              connections others miss — this app was built for you.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={scrollReveal}
+            className="rounded-3xl bg-gradient-to-br from-accent/20 to-primary/15 p-px shadow-2xl shadow-accent/5"
+          >
+            <div className="rounded-3xl bg-card p-8 sm:p-10">
+              <div className="grid gap-8 sm:grid-cols-3">
+                {[
+                  {
+                    emoji: "👀",
+                    title: "Add your people",
+                    desc: "Tell us who you want to set up — your daughter, your best friend, your coworker who deserves someone great.",
+                  },
+                  {
+                    emoji: "💡",
+                    title: "Make introductions",
+                    desc: "When you think of someone perfect, submit them with a personal pitch. We handle the rest.",
+                  },
+                  {
+                    emoji: "🎉",
+                    title: "Watch the magic",
+                    desc: "Track your intros, earn badges, and celebrate when your people find love — because of you.",
+                  },
+                ].map((step) => (
+                  <div key={step.title} className="text-center">
+                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/10 to-primary/10 text-2xl">
+                      {step.emoji}
+                    </div>
+                    <h4 className="mb-2 font-semibold text-text-primary">{step.title}</h4>
+                    <p className="text-sm leading-relaxed text-text-secondary">{step.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-10 text-center">
+                <CTAButton />
+                <p className="mt-3 text-sm text-text-tertiary">
+                  Download the app and become a Legendary Matchmaker
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* ═══ FINAL CTA ═══ */}
       <section className="relative px-6 py-20 sm:py-28">
         {/* Background glow */}
@@ -547,11 +619,11 @@ export default function Home() {
           className="relative mx-auto max-w-2xl text-center"
         >
           <h2 className="mb-5 font-display text-4xl text-text-primary sm:text-5xl">
-            Your friends have been dying
-            <br />to set you up
+            Set up your friends.
+            <br />Get set up by yours.
           </h2>
           <p className="mb-10 text-lg text-text-secondary">
-            Let them. Be first to know when we launch.
+            Be first to know when we launch.
           </p>
           <CTAButton />
         </motion.div>
