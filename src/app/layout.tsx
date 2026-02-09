@@ -4,25 +4,25 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "You Two Should Meet — Your friends know you better than an algorithm",
+    default: "You Two Should Meet — The best relationships start with 'you two should meet'",
     template: "%s | You Two Should Meet",
   },
   description:
-    "The anti-dating app where your friends set you up. No swiping, no algorithms — just people who know and love you, finding someone great.",
+    "Your friends already know who you'd be perfect with. We make it easy for them to set you up. No swiping, no algorithms — just people who love you.",
   metadataBase: new URL("https://youtwoshouldmeet.app"),
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "You Two Should Meet",
-    title: "You Two Should Meet — Your friends know you better than an algorithm",
+    title: "You Two Should Meet — The best relationships start with 'you two should meet'",
     description:
-      "The anti-dating app where your friends set you up. No swiping, no algorithms — just people who know and love you, finding someone great.",
+      "Your friends already know who you'd be perfect with. We make it easy for them to set you up. No swiping, no algorithms — just people who love you.",
   },
   twitter: {
     card: "summary_large_image",
     title: "You Two Should Meet",
     description:
-      "The anti-dating app where your friends set you up. No swiping, no algorithms — just people who know and love you.",
+      "Your friends already know who you'd be perfect with. We make it easy for them to set you up. No swiping, no algorithms.",
   },
   icons: {
     icon: "/favicon.svg",
@@ -69,7 +69,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
