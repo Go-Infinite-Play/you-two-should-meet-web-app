@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 
@@ -26,6 +27,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: "/favicon.svg",
+    apple: "/apple-icon.png",
   },
 };
 
@@ -34,7 +36,7 @@ function Header() {
     <header className="w-full border-b border-primary/10">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
         <Link href="/" className="flex items-center gap-2 text-lg font-bold text-text-primary">
-          <span className="text-2xl">💕</span>
+          <Image src="/logo.png" alt="" width={32} height={32} className="h-8 w-8" />
           <span>You Two Should Meet</span>
         </Link>
       </div>

@@ -171,7 +171,7 @@ export default function Home() {
         </div>
 
         <motion.div
-          className="relative mx-auto max-w-2xl text-center"
+          className="relative mx-auto max-w-2xl text-center md:max-w-3xl"
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
