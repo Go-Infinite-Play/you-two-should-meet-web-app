@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase-server";
 import { toE164 } from "@/lib/format-phone";
+import twilio from "twilio";
 
 export async function POST(
   request: NextRequest,
@@ -81,17 +82,32 @@ export async function POST(
     subtitle: "They think you'd really hit it off",
   });
 
-  // Trigger SMS to candidate (fire-and-forget)
+  // Send SMS to candidate via Twilio
   try {
-    await supabase.functions.invoke("send-candidate-sms", {
-      body: {
-        introduction_id: introduction.id,
-        candidate_name,
-        candidate_phone: toE164(candidate_phone),
-        candidate_invite_token: candidateInviteToken,
-        matchmaker_name: assignment.matchmaker_name,
-      },
+    const twilioClient = twilio(
+      process.env.TWILIO_ACCOUNT_SID!,
+      process.env.TWILIO_AUTH_TOKEN!
+    );
+
+    const candidateLink = `https://youtwoshouldmeet.app/c/${candidateInviteToken}`;
+
+    await twilioClient.messages.create({
+      to: toE164(candidate_phone),
+      from: process.env.TWILIO_FROM_NUMBER!,
+      body: `Hey ${candidate_name}! ${assignment.matchmaker_name} thinks you'd be great for a friend of theirs. See what they said: ${candidateLink}\n\nReply STOP to opt out.`,
     });
+
+    // Log the SMS
+    try {
+      await supabase.from("sms_log").insert({
+        to_phone: toE164(candidate_phone),
+        from_phone: process.env.TWILIO_FROM_NUMBER,
+        message_type: "candidate_invite",
+        status: "sent",
+      });
+    } catch {
+      // Don't fail if sms_log insert fails
+    }
   } catch (smsError) {
     console.error("SMS send failed:", smsError);
   }
