@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import "./globals.css";
 
@@ -31,18 +30,6 @@ export const metadata: Metadata = {
   },
 };
 
-function Header() {
-  return (
-    <header className="w-full border-b border-primary/10">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <Link href="/" className="flex items-center gap-2 text-lg font-bold text-text-primary">
-          <Image src="/logo.png" alt="" width={32} height={32} className="h-8 w-8" />
-          <span>You Two Should Meet</span>
-        </Link>
-      </div>
-    </header>
-  );
-}
 
 function Footer() {
   return (
@@ -76,7 +63,6 @@ export default function RootLayout({
         />
       </head>
       <body className="flex min-h-screen flex-col antialiased">
-        <Header />
         <main className="flex-1">{children}</main>
         <Footer />
       </body>
