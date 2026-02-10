@@ -368,7 +368,7 @@ export default function Home() {
         </motion.div>
 
         {/* Phone fan layout */}
-        <div className="relative mx-auto flex max-w-4xl items-center justify-center gap-4 sm:gap-8">
+        <div className="relative mx-auto flex max-w-4xl items-center justify-center gap-4 sm:gap-8 md:gap-10">
           {[
             { src: "/screenshots/welcome.png", alt: "Welcome screen", rotate: "-6deg", delay: 0 },
             { src: "/screenshots/matchmakers.png", alt: "Pick your matchmakers", rotate: "0deg", delay: 0.1 },
@@ -380,24 +380,33 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0, rotate: phone.rotate }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ delay: phone.delay, duration: 0.8, ease }}
-              className="relative w-[30%] max-w-[220px] shrink-0"
+              className="relative w-[30%] max-w-[240px] shrink-0"
             >
-              {/* Phone frame */}
-              <div className="overflow-hidden rounded-[1.5rem] border-[3px] border-gray-900/80 bg-gray-900 shadow-2xl shadow-black/20 sm:rounded-[2rem] sm:border-4">
-                {/* Notch */}
-                <div className="relative flex justify-center bg-gray-900 py-1 sm:py-1.5">
-                  <div className="h-[6px] w-[40%] rounded-full bg-black sm:h-2" />
+              {/* iPhone frame — titanium bezel with realistic proportions */}
+              <div className="relative rounded-[2rem] bg-gradient-to-b from-[#E3E2DD] via-[#D6D5D0] to-[#C8C7C2] p-[3px] shadow-[0_25px_60px_-12px_rgba(0,0,0,0.25),0_0_0_1px_rgba(0,0,0,0.08)] sm:rounded-[2.5rem] sm:p-1">
+                {/* Inner bezel edge */}
+                <div className="rounded-[calc(2rem-3px)] bg-[#1C1C1E] p-[2px] sm:rounded-[calc(2.5rem-4px)] sm:p-[2.5px]">
+                  {/* Screen area */}
+                  <div className="relative overflow-hidden rounded-[calc(2rem-5px)] bg-background sm:rounded-[calc(2.5rem-6.5px)]">
+                    {/* Dynamic Island */}
+                    <div className="absolute left-1/2 top-[6px] z-10 h-[10px] w-[28%] -translate-x-1/2 rounded-full bg-black sm:top-[8px] sm:h-[13px]" />
+                    {/* Screenshot */}
+                    <div className="relative aspect-[393/852] w-full">
+                      <Image
+                        src={phone.src}
+                        alt={phone.alt}
+                        fill
+                        className="object-cover object-top"
+                        sizes="240px"
+                      />
+                    </div>
+                  </div>
                 </div>
-                {/* Screen */}
-                <div className="relative aspect-[393/852] w-full overflow-hidden bg-background">
-                  <Image
-                    src={phone.src}
-                    alt={phone.alt}
-                    fill
-                    className="object-cover object-top"
-                    sizes="220px"
-                  />
-                </div>
+                {/* Side button (power) */}
+                <div className="absolute -right-[2px] top-[22%] h-[10%] w-[3px] rounded-r-full bg-[#D6D5D0] sm:-right-[3px] sm:w-[3.5px]" />
+                {/* Volume buttons */}
+                <div className="absolute -left-[2px] top-[18%] h-[6%] w-[3px] rounded-l-full bg-[#D6D5D0] sm:-left-[3px] sm:w-[3.5px]" />
+                <div className="absolute -left-[2px] top-[26%] h-[6%] w-[3px] rounded-l-full bg-[#D6D5D0] sm:-left-[3px] sm:w-[3.5px]" />
               </div>
             </motion.div>
           ))}
