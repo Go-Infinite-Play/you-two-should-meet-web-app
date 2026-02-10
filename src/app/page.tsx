@@ -194,7 +194,7 @@ export default function Home() {
             The best relationships
             <br />
             start with{" "}
-            <em className="bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
+            <em className="bg-gradient-to-r from-primary to-primary-light bg-clip-text pr-2 text-transparent">
               &ldquo;you two should meet&rdquo;
             </em>
           </motion.h1>
