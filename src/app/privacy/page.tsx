@@ -82,6 +82,10 @@ export default function PrivacyPage() {
               <li><strong className="text-text-primary">Users:</strong> for account verification and match notifications</li>
             </ul>
             <p className="mt-3">
+              Mobile information collected as part of the SMS opt-in process will not be shared with
+              or sold to third parties or affiliates for marketing or promotional purposes.
+            </p>
+            <p className="mt-3">
               Message frequency varies but will not exceed 5 messages per month. Message and data rates
               may apply. You can opt out of SMS messages at any time by replying STOP to any message.
               Reply HELP for assistance or contact us at{" "}
