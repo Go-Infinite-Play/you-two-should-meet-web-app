@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 /* ─── Animation variants ─── */
@@ -344,6 +345,82 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
+      </section>
+
+      {/* ═══ APP SHOWCASE ═══ */}
+      <section className="relative overflow-hidden px-6 py-20 sm:py-28">
+        {/* Subtle gradient bg */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-80px" }}
+          variants={scrollReveal}
+          className="relative mb-14 text-center"
+        >
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary/60">
+            See the app
+          </p>
+          <h2 className="font-display text-4xl text-text-primary sm:text-5xl">
+            Simple by design
+          </h2>
+        </motion.div>
+
+        {/* Phone fan layout */}
+        <div className="relative mx-auto flex max-w-4xl items-center justify-center gap-4 sm:gap-8">
+          {[
+            { src: "/screenshots/welcome.png", alt: "Welcome screen", rotate: "-6deg", delay: 0 },
+            { src: "/screenshots/matchmakers.png", alt: "Pick your matchmakers", rotate: "0deg", delay: 0.1 },
+            { src: "/screenshots/success.png", alt: "You're all set", rotate: "6deg", delay: 0.2 },
+          ].map((phone) => (
+            <motion.div
+              key={phone.src}
+              initial={{ opacity: 0, y: 48, rotate: 0 }}
+              whileInView={{ opacity: 1, y: 0, rotate: phone.rotate }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ delay: phone.delay, duration: 0.8, ease }}
+              className="relative w-[30%] max-w-[220px] shrink-0"
+            >
+              {/* Phone frame */}
+              <div className="overflow-hidden rounded-[1.5rem] border-[3px] border-gray-900/80 bg-gray-900 shadow-2xl shadow-black/20 sm:rounded-[2rem] sm:border-4">
+                {/* Notch */}
+                <div className="relative flex justify-center bg-gray-900 py-1 sm:py-1.5">
+                  <div className="h-[6px] w-[40%] rounded-full bg-black sm:h-2" />
+                </div>
+                {/* Screen */}
+                <div className="relative aspect-[393/852] w-full overflow-hidden bg-background">
+                  <Image
+                    src={phone.src}
+                    alt={phone.alt}
+                    fill
+                    className="object-cover object-top"
+                    sizes="220px"
+                  />
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Captions */}
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-40px" }}
+          variants={scrollReveal}
+          className="mx-auto mt-10 flex max-w-3xl justify-between px-4 sm:mt-14 sm:px-8"
+        >
+          {[
+            "Open the app",
+            "Choose your matchmakers",
+            "You\u2019re all set!",
+          ].map((caption) => (
+            <p key={caption} className="flex-1 text-center text-xs font-medium text-text-secondary sm:text-sm">
+              {caption}
+            </p>
+          ))}
+        </motion.div>
       </section>
 
       {/* ═══ THE STORY — Before / After / Bridge ═══ */}
