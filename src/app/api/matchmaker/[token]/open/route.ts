@@ -6,6 +6,7 @@ export async function POST(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+  if (token === "demo") return NextResponse.json({ success: true });
   const supabase = createAdminClient();
 
   // Only update if still in 'notified' status (idempotent)

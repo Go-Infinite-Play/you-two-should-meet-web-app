@@ -6,6 +6,36 @@ export async function GET(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+
+  // Demo token for Twilio A2P campaign verification
+  if (token === "demo") {
+    return NextResponse.json({
+      assignment: {
+        id: "demo",
+        invite_token: "demo",
+        matchmaker_name: "Alex",
+        matchmaker_phone: "+15555555555",
+        single_id: "demo",
+        status: "opened",
+        personal_note: "You always know the right people — I trust your taste!",
+        created_at: new Date().toISOString(),
+      },
+      single: {
+        first_name: "Jordan",
+        age: 27,
+        gender: "Female",
+        city: "San Francisco",
+      },
+      profile: {
+        interested_in: "Men",
+        age_range_min: 25,
+        age_range_max: 35,
+        preference_tags: ["Adventurous", "Good sense of humor", "Kind"],
+        dealbreaker_tags: ["Smoking"],
+      },
+    });
+  }
+
   const supabase = createAdminClient();
 
   // Look up the assignment by invite_token

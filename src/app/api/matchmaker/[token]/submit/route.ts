@@ -7,6 +7,9 @@ export async function POST(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+  if (token === "demo") {
+    return NextResponse.json({ success: true, introduction: { id: "demo" } });
+  }
   const supabase = createAdminClient();
 
   const body = await request.json();

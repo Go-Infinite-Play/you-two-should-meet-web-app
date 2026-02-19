@@ -6,6 +6,33 @@ export async function GET(
   { params }: { params: Promise<{ token: string }> }
 ) {
   const { token } = await params;
+
+  // Demo token for Twilio A2P campaign verification
+  if (token === "demo") {
+    return NextResponse.json({
+      introduction: {
+        id: "demo",
+        candidate_invite_token: "demo",
+        matchmaker_name: "Alex",
+        candidate_name: "Sam",
+        candidate_description:
+          "Sam is one of the most genuine people I know — always makes everyone feel welcome and has the best stories.",
+        reason_why_great:
+          "You both love hiking and trying new restaurants, and I've always thought you'd really hit it off.",
+        your_description:
+          "Jordan is warm, driven, and always up for an adventure. One of my favorite people.",
+        candidate_status: "pending",
+        overall_status: "pending",
+      },
+      single: {
+        first_name: "Jordan",
+        age: 27,
+        gender: "Female",
+        city: "San Francisco",
+      },
+    });
+  }
+
   const supabase = createAdminClient();
 
   const { data: introduction, error } = await supabase
