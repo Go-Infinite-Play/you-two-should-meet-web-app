@@ -360,21 +360,21 @@ export default function Home() {
               number="01"
               title="Post someone who's looking"
               description="Know someone single? Post a little about them — their personality, what makes them special. Yes, you can mention they're a doctor. We'd be disappointed if you didn't."
-              accent="#D4A574"
+              accent="#4A7FB5"
               delay={0}
             />
             <StepCard
               number="02"
               title="Browse & suggest a match"
               description="See someone on the feed and think 'I know JUST the person'? Suggest the match. You don't even need to know someone who's looking — just browse and jump in when inspiration strikes."
-              accent="#E8636F"
+              accent="#C9A84C"
               delay={0.1}
             />
             <StepCard
               number="03"
               title="Both say yes? Mazel tov!"
               description="When two yentas agree on a match, both singles get a text. If they both say yes — everyone gets to kvell. Especially you."
-              accent="#C4944A"
+              accent="#2C5F8A"
               delay={0.2}
             />
           </div>
