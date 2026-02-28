@@ -4,19 +4,19 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "You Two Should Meet — The best relationships start with 'you two should meet'",
+    default: "You Two Should Meet — The matchmaking app for mothers who know best",
     template: "%s | You Two Should Meet",
   },
   description:
-    "Your friends already know who you'd be perfect with. We make it easy for them to set you up. No swiping, no algorithms — just people who love you.",
+    "Your mother was right about a lot of things. Maybe she's right about this too. You Too Should Meet is the matchmaking app for mothers who know best.",
   metadataBase: new URL("https://youtwoshouldmeet.app"),
   openGraph: {
     type: "website",
     locale: "en_US",
     siteName: "You Two Should Meet",
-    title: "You Two Should Meet — The best relationships start with 'you two should meet'",
+    title: "You Two Should Meet — The matchmaking app for mothers who know best",
     description:
-      "Your friends already know who you'd be perfect with. We make it easy for them to set you up. No swiping, no algorithms — just people who love you.",
+      "Your mother was right about a lot of things. Maybe she's right about this too. You Too Should Meet is the matchmaking app for mothers who know best.",
   },
   twitter: {
     card: "summary_large_image",
@@ -42,6 +42,9 @@ function Footer() {
           </Link>
           <Link href="/terms" className="transition-colors hover:text-primary">
             Terms &amp; Conditions
+          </Link>
+          <Link href="/sms-terms" className="transition-colors hover:text-primary">
+            SMS Terms
           </Link>
         </nav>
       </div>

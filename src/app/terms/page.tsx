@@ -10,7 +10,7 @@ export default function TermsPage() {
     <div className="mx-auto max-w-3xl px-6 py-12 sm:py-16">
       <div className="rounded-3xl bg-card p-8 shadow-sm sm:p-12">
         <h1 className="mb-2 text-3xl font-bold text-text-primary sm:text-4xl">Terms &amp; Conditions</h1>
-        <p className="mb-10 text-text-secondary">Last updated: February 8, 2026</p>
+        <p className="mb-10 text-text-secondary">Last updated: February 28, 2026</p>
 
         <div className="space-y-8 text-text-primary leading-relaxed">
           <section>
@@ -38,15 +38,22 @@ export default function TermsPage() {
           <section>
             <h2 className="mb-3 text-xl font-semibold">3. Description of Service</h2>
             <p>
-              You Two Should Meet is a matchmaking platform where friends (&quot;matchmakers&quot;) help connect
-              singles with potential matches (&quot;match candidates&quot;). The Service includes:
+              You Two Should Meet is a matchmaking platform where trusted individuals (&quot;Yentas&quot;) help connect
+              singles they personally know with potential matches. Yentas are the primary users of the Service and
+              act on behalf of the singles they care about. The Service includes:
             </p>
             <ul className="mt-2 list-disc space-y-1 pl-6 text-text-secondary">
-              <li>A mobile application for singles to create profiles and invite matchmakers</li>
-              <li>A web interface for matchmakers to propose match candidates</li>
-              <li>A web interface for match candidates to view and respond to recommendations</li>
-              <li>SMS notifications to facilitate the matching process</li>
+              <li>A web application for Yentas to create &quot;looking&quot; posts describing a single person they know, including their name, age, and a brief description</li>
+              <li>A matchmaking feed where Yentas browse looking posts from other Yentas and suggest matches between their respective singles</li>
+              <li>A match approval flow where both Yentas must agree on a suggested match before either single is contacted</li>
+              <li>SMS notifications sent to singles when a match is suggested and approved by both Yentas, and when both singles accept (a mutual match alert)</li>
+              <li>Web links sent via SMS that allow singles to view and respond to match suggestions</li>
             </ul>
+            <p className="mt-3">
+              Singles do not create profiles, browse matches, or use the application directly. They interact
+              with the Service only through SMS messages and web links sent to them when a match is proposed
+              on their behalf.
+            </p>
           </section>
 
           <section>
@@ -54,8 +61,19 @@ export default function TermsPage() {
             <div className="rounded-2xl bg-background p-5">
               <p><strong>Program name:</strong> You Two Should Meet</p>
               <p className="mt-2">
-                <strong>Message frequency:</strong> You may receive up to 5 SMS messages per month
-                related to matchmaking activity, account verification, and notifications.
+                <strong>Who receives messages:</strong> SMS messages are sent to singles on whose behalf
+                a Yenta has created a looking post. Yentas do not receive SMS messages; they interact
+                with the Service through the web application.
+              </p>
+              <p className="mt-2">
+                <strong>When messages are sent:</strong> Singles receive SMS messages when a match is
+                suggested by a Yenta and approved by both Yentas involved, and again when both singles
+                accept the match (a mutual match alert). Messages may also be sent for verification
+                purposes.
+              </p>
+              <p className="mt-2">
+                <strong>Message frequency:</strong> Message frequency varies based on matchmaking
+                activity but will not exceed 5 messages per month.
               </p>
               <p className="mt-2">
                 <strong>Message and data rates may apply.</strong> Please check with your wireless
@@ -84,9 +102,11 @@ export default function TermsPage() {
             <h2 className="mb-3 text-xl font-semibold">5. User Conduct</h2>
             <p>You agree not to:</p>
             <ul className="mt-2 list-disc space-y-1 pl-6 text-text-secondary">
-              <li>Create a fake or misleading profile</li>
+              <li>Create a looking post for a fictional or non-existent person</li>
+              <li>Post misleading descriptions of the person you are posting on behalf of</li>
+              <li>Post a looking notice for someone without their knowledge or consent</li>
               <li>Impersonate any person or entity</li>
-              <li>Harass, abuse, threaten, or intimidate other users</li>
+              <li>Harass, abuse, threaten, or intimidate other Yentas or singles</li>
               <li>Use the Service for any unlawful purpose</li>
               <li>Send spam, unsolicited messages, or promotional material through the Service</li>
               <li>Attempt to access another user&apos;s account without authorization</li>

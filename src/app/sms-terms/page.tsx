@@ -13,7 +13,7 @@ export default function SmsTermsPage() {
         <h1 className="mb-2 text-3xl font-bold text-text-primary sm:text-4xl">
           SMS Terms &amp; Conditions
         </h1>
-        <p className="mb-10 text-text-secondary">Last updated: February 19, 2026</p>
+        <p className="mb-10 text-text-secondary">Last updated: February 28, 2026</p>
 
         <div className="space-y-8 text-text-primary leading-relaxed">
           <section>
@@ -25,34 +25,36 @@ export default function SmsTermsPage() {
             <h2 className="mb-3 text-xl font-semibold">What Messages Are About</h2>
             <p>
               You Two Should Meet sends transactional SMS messages to facilitate our
-              friend-powered matchmaking service. Messages include:
+              Yenta-powered matchmaking service. Messages are sent to singles whose
+              information has been provided by Yentas (matchmakers) using the app.
+              Messages include:
             </p>
             <ul className="mt-2 list-disc space-y-1 pl-6 text-text-secondary">
               <li>
-                <strong className="text-text-primary">Matchmaker invitations:</strong> when
-                a user invites a friend to be their matchmaker, the friend receives a text
-                with a link to participate
-              </li>
-              <li>
-                <strong className="text-text-primary">Match candidate notifications:</strong>{" "}
-                when a matchmaker recommends someone, the candidate receives a text with a
-                link to see the introduction
+                <strong className="text-text-primary">Match suggestion notifications:</strong> when
+                two Yentas agree that their respective singles would be a great match, both
+                singles receive a text with a secure link to view the suggestion and respond
               </li>
               <li>
                 <strong className="text-text-primary">Mutual match alerts:</strong> when both
-                people say yes, they are notified that a connection has been made
+                singles accept a match suggestion, they are notified via SMS that a connection
+                has been made and provided with each other&apos;s contact information
+              </li>
+              <li>
+                <strong className="text-text-primary">Verification messages:</strong> for phone
+                number verification during account setup
               </li>
             </ul>
             <p className="mt-3">
               No marketing or promotional messages are sent. All messages are triggered by
-              in-app user actions.
+              in-app user actions by Yentas on the platform.
             </p>
           </section>
 
           <section>
             <h2 className="mb-3 text-xl font-semibold">Consent &amp; Opt-In</h2>
             <p>
-              Users provide their mobile phone number during account registration and
+              Yentas provide their mobile phone number during account registration and
               explicitly consent to receive SMS messages by checking an opt-in checkbox. The
               opt-in checkbox includes the following language:
             </p>
@@ -66,18 +68,19 @@ export default function SmsTermsPage() {
               </p>
             </div>
             <p className="mt-3">
-              For matchmakers and match candidates who receive messages initiated by a user,
-              each initial SMS clearly identifies the sender (You Two Should Meet), explains
-              why they are receiving the message, and includes opt-out instructions.
+              Singles who receive SMS messages as a result of a Yenta-arranged match receive
+              an initial message that clearly identifies the sender (You Too Should Meet),
+              explains why they are receiving the message, and includes opt-out instructions.
+              Singles are only contacted after both Yentas have agreed on a match suggestion.
             </p>
           </section>
 
           <section>
             <h2 className="mb-3 text-xl font-semibold">Message Frequency</h2>
             <p>
-              Message frequency varies based on user activity but will not exceed 5 messages
-              per month. Messages are only sent when triggered by specific in-app actions
-              (e.g., a friend invites you as a matchmaker, or a matchmaker recommends you as
+              Message frequency varies based on matchmaking activity but will not exceed 5
+              messages per month. Messages are only sent when triggered by specific in-app
+              actions (e.g., two Yentas agree on a match suggestion, or both singles accept
               a match).
             </p>
           </section>
