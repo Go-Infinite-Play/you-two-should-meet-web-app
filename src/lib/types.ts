@@ -81,3 +81,85 @@ export interface CandidateData {
   introduction: Introduction;
   matchmaker_name: string;
 }
+
+export interface Broadcast {
+  id: string;
+  matchmaker_user_id: string;
+  single_id: string;
+  assignment_id: string;
+  vibe_blurb: string;
+  share_token: string;
+  status: "active" | "closed";
+  created_at: string;
+}
+
+export interface BroadcastLead {
+  id: string;
+  broadcast_id: string;
+  suggester_name: string;
+  suggester_phone: string | null;
+  candidate_name: string;
+  candidate_phone: string | null;
+  relationship: string;
+  pitch: string;
+  status: "new" | "intro_made" | "passed";
+  created_at: string;
+}
+
+export interface BroadcastData {
+  broadcast: Broadcast;
+  single: {
+    first_name: string;
+    age: number;
+    city: string;
+  };
+  matchmaker_name: string;
+}
+
+// ─── Yenta Circle Types ───
+
+export interface LookingPost {
+  id: string;
+  yenta_id: string;
+  person_name: string;
+  person_age: number | null;
+  person_gender: string | null;
+  interested_in: string | null;
+  description: string;
+  photo_url: string | null;
+  status: 'active' | 'matched' | 'closed';
+  created_at: string;
+  updated_at: string;
+  yenta_name?: string;
+}
+
+export interface MatchSuggestion {
+  id: string;
+  looking_post_id: string;
+  suggesting_yenta_id: string;
+  suggested_name: string;
+  suggested_age: number | null;
+  suggested_phone: string | null;
+  why_great_match: string;
+  status: 'pending' | 'approved' | 'declined';
+  created_at: string;
+  updated_at: string;
+  suggesting_yenta_name?: string;
+}
+
+export interface Match {
+  id: string;
+  looking_post_id: string;
+  suggestion_id: string;
+  person_a_name: string;
+  person_a_phone: string;
+  person_a_token: string;
+  person_a_status: 'pending' | 'accepted' | 'declined';
+  person_b_name: string;
+  person_b_phone: string;
+  person_b_token: string;
+  person_b_status: 'pending' | 'accepted' | 'declined';
+  overall_status: 'pending' | 'matched' | 'declined';
+  created_at: string;
+  updated_at: string;
+}
