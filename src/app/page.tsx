@@ -1,8 +1,9 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
 
-/* ─── Animation variants ─── */
+/* ─── Animation helpers ─── */
 const ease = [0.25, 0.4, 0.25, 1] as const;
 
 const fadeUp = {
@@ -28,48 +29,140 @@ const scrollReveal = {
   },
 };
 
-/* ─── Inline SVG Icons ─── */
-function HeartIcon({ className }: { className?: string }) {
+/* ─── Rotating Bubbe Quotes ─── */
+const bubbeQuotes = [
+  "You're not getting any younger, darling.",
+  "I'm not saying I told you so, but...",
+  "Would it kill you to meet someone nice?",
+  "My neighbor's son is a DOCTOR.",
+  "You'll thank me later.",
+  "I just want grandchildren before I die.",
+  "What's wrong with a blind date? I met your father that way.",
+];
+
+function RotatingQuote() {
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % bubbeQuotes.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor">
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-    </svg>
+    <div className="relative h-8 overflow-hidden sm:h-9">
+      {bubbeQuotes.map((quote, i) => (
+        <motion.p
+          key={quote}
+          className="absolute inset-0 font-handwritten text-2xl text-accent sm:text-3xl"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{
+            opacity: i === index ? 1 : 0,
+            y: i === index ? 0 : -20,
+          }}
+          transition={{ duration: 0.5, ease: "easeInOut" }}
+        >
+          &ldquo;{quote}&rdquo;
+        </motion.p>
+      ))}
+    </div>
   );
 }
 
-function ShieldIcon({ className }: { className?: string }) {
+/* ─── iMessage Thread ─── */
+function TextThread() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
+
+  const messages = [
+    { sender: "mom", text: "Deborah, I met the most wonderful young man at temple today", delay: 0 },
+    { sender: "mom", text: "He's a lawyer. Tall. Very respectful to his mother.", delay: 0.3 },
+    { sender: "friend", text: "Mom...", delay: 0.8 },
+    { sender: "mom", text: "I'm just saying! Mrs. Shapiro's daughter is PERFECT for him", delay: 1.2 },
+    { sender: "mom", text: "I already told her I know someone 😏", delay: 1.6 },
+    { sender: "friend", text: "You didn't.", delay: 2.2 },
+    { sender: "mom", text: "I downloaded the app. It's official.", delay: 2.6 },
+    { sender: "mom", text: "You're welcome. 💕", delay: 3.0 },
+  ];
+
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-    </svg>
+    <div ref={ref} className="mx-auto max-w-sm space-y-2.5 px-2">
+      {messages.map((msg, i) => (
+        <motion.div
+          key={i}
+          initial={{ opacity: 0, y: 12, scale: 0.95 }}
+          animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
+          transition={{ delay: msg.delay, duration: 0.4, ease: "easeOut" }}
+          className={`flex ${msg.sender === "mom" ? "justify-start" : "justify-end"}`}
+        >
+          <div
+            className={`max-w-[80%] rounded-2xl px-4 py-2.5 text-[15px] leading-relaxed shadow-sm ${
+              msg.sender === "mom"
+                ? "rounded-bl-md bg-[#E9E9EB] text-[#1C1C1E]"
+                : "rounded-br-md bg-[#007AFF] text-white"
+            }`}
+          >
+            {msg.text}
+          </div>
+        </motion.div>
+      ))}
+    </div>
   );
 }
 
-function LockIcon({ className }: { className?: string }) {
+/* ─── Step Card ─── */
+function StepCard({
+  number,
+  title,
+  description,
+  accent,
+  delay = 0,
+}: {
+  number: string;
+  title: string;
+  description: string;
+  accent: string;
+  delay?: number;
+}) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-    </svg>
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, margin: "-60px" }}
+      variants={{
+        hidden: { opacity: 0, y: 32 },
+        visible: { opacity: 1, y: 0, transition: { delay, duration: 0.7, ease } },
+      }}
+      className="group relative"
+    >
+      <div className="relative overflow-hidden rounded-3xl border border-accent/15 bg-white p-8 shadow-lg transition-all duration-500 hover:shadow-xl hover:shadow-accent/10 sm:p-10">
+        {/* Large background number */}
+        <span
+          className="pointer-events-none absolute -right-2 -top-4 font-display text-[120px] leading-none"
+          style={{ color: accent, opacity: 0.06 }}
+        >
+          {number}
+        </span>
+
+        {/* Gold accent line */}
+        <div
+          className="mb-6 h-1 w-12 rounded-full"
+          style={{ background: accent }}
+        />
+
+        <h3 className="relative mb-3 font-display text-2xl text-text-primary sm:text-3xl">
+          {title}
+        </h3>
+        <p className="relative text-base leading-relaxed text-text-secondary">
+          {description}
+        </p>
+      </div>
+    </motion.div>
   );
 }
 
-function HeartHandIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-    </svg>
-  );
-}
-
-function SparklesIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-      <path d="m12 3-1.9 5.8a2 2 0 0 1-1.3 1.3L3 12l5.8 1.9a2 2 0 0 1 1.3 1.3L12 21l1.9-5.8a2 2 0 0 1 1.3-1.3L21 12l-5.8-1.9a2 2 0 0 1-1.3-1.3Z" />
-    </svg>
-  );
-}
-
+/* ─── Apple CTA ─── */
 function AppleIcon() {
   return (
     <svg className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
@@ -78,56 +171,14 @@ function AppleIcon() {
   );
 }
 
-/* ─── Inline Illustrations ─── */
-function PhoneIllustration() {
-  return (
-    <svg viewBox="0 0 80 100" fill="none" className="h-24 w-auto opacity-80">
-      <rect x="12" y="4" width="56" height="92" rx="12" stroke="#E8636F" strokeWidth="2" fill="#FBF7F4" />
-      <rect x="18" y="14" width="44" height="62" rx="4" fill="#fff" />
-      <circle cx="40" cy="86" r="4" stroke="#E8636F" strokeWidth="1.5" fill="none" />
-      <circle cx="40" cy="9" r="2" fill="#F2949B" />
-      {/* Heart notification */}
-      <rect x="46" y="8" width="24" height="18" rx="9" fill="#E8636F" />
-      <path d="M58 13.5l-.9-.8C55.2 11.2 54 10.2 54 9.2 54 8.4 54.6 7.8 55.4 7.8c.4 0 .9.2 1.2.5.3-.3.7-.5 1.2-.5.8 0 1.4.6 1.4 1.4 0 1-1.2 2-3 3.6l-.2.2z" fill="white" transform="translate(0, 6)" />
-      <text x="52" y="22" textAnchor="middle" fill="white" fontSize="5" fontWeight="600">+3</text>
-    </svg>
-  );
-}
-
-function MessageIllustration() {
-  return (
-    <svg viewBox="0 0 120 70" fill="none" className="h-16 w-auto opacity-80">
-      {/* Speech bubble */}
-      <rect x="4" y="4" width="112" height="50" rx="16" fill="white" stroke="#E8636F" strokeWidth="1.5" />
-      <polygon points="24,54 32,64 40,54" fill="white" stroke="#E8636F" strokeWidth="1.5" strokeLinejoin="round" />
-      <line x1="24" y1="54" x2="40" y2="54" stroke="white" strokeWidth="3" />
-      {/* Italic text lines */}
-      <rect x="16" y="16" width="60" height="4" rx="2" fill="#F2949B" opacity="0.6" transform="rotate(-1, 16, 16)" />
-      <rect x="16" y="26" width="80" height="4" rx="2" fill="#FBBF8A" opacity="0.5" transform="rotate(-1, 16, 26)" />
-      <rect x="16" y="36" width="50" height="4" rx="2" fill="#F2949B" opacity="0.4" transform="rotate(-1, 16, 36)" />
-    </svg>
-  );
-}
-
-function ConnectionIllustration() {
-  return (
-    <svg viewBox="0 0 100 60" fill="none" className="h-16 w-auto opacity-80">
-      {/* Two overlapping circles (avatars) */}
-      <circle cx="36" cy="30" r="20" fill="#F2949B" opacity="0.7" />
-      <circle cx="64" cy="30" r="20" fill="#FBBF8A" opacity="0.7" />
-      {/* Heart in overlap */}
-      <path d="M50 38l-1-.9C46.2 34.7 44 32.7 44 30.5c0-1.6 1.2-2.8 2.8-2.8.8 0 1.6.4 2.2 1 .6-.6 1.4-1 2.2-1 1.6 0 2.8 1.2 2.8 2.8 0 2.2-2.2 4.2-5 6.5l-1 .9z" fill="#E8636F" />
-    </svg>
-  );
-}
-
-/* ─── CTA Button ─── */
-function CTAButton() {
+function CTAButton({ large = false }: { large?: boolean }) {
   return (
     <motion.div
       whileHover={{ y: -2, scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
-      className="inline-flex cursor-default items-center gap-2.5 rounded-2xl bg-gradient-to-r from-primary to-primary-light px-8 py-4 text-lg font-semibold text-white shadow-lg shadow-primary/25 transition-shadow hover:shadow-xl hover:shadow-primary/30"
+      className={`inline-flex cursor-default items-center gap-2.5 rounded-full bg-gradient-to-r from-primary to-primary-deep font-semibold text-white shadow-lg shadow-primary/25 transition-shadow hover:shadow-xl hover:shadow-primary/30 ${
+        large ? "px-10 py-5 text-lg" : "px-8 py-4 text-base"
+      }`}
     >
       <AppleIcon />
       Coming Soon to iOS
@@ -139,397 +190,275 @@ function CTAButton() {
 export default function Home() {
   return (
     <div className="overflow-hidden">
-      {/* ═══ HERO ═══ */}
-      <section className="relative flex min-h-[92svh] items-center justify-center px-6 py-20">
-        {/* Animated background blobs */}
+      {/* ═══════════════════════════════════════════════════
+           HERO — The opening kvetch
+         ═══════════════════════════════════════════════════ */}
+      <section className="linen-texture relative flex min-h-[94svh] items-center justify-center px-6 py-24">
+        {/* Warm background glow */}
         <div className="pointer-events-none absolute inset-0 overflow-hidden">
           <div
-            className="absolute -right-32 -top-32 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-primary/15 to-peach/20 blur-3xl"
-            style={{ animation: "blob-drift-1 20s ease-in-out infinite" }}
+            className="absolute -right-40 -top-40 h-[600px] w-[600px] rounded-full bg-gradient-to-br from-primary/12 to-accent/15 blur-[100px]"
+            style={{ animation: "blob-drift-1 22s ease-in-out infinite" }}
           />
           <div
-            className="absolute -bottom-32 -left-32 h-[400px] w-[400px] rounded-full bg-gradient-to-br from-accent/10 to-primary/15 blur-3xl"
-            style={{ animation: "blob-drift-2 25s ease-in-out infinite" }}
-          />
-          <div
-            className="absolute left-1/2 top-1/3 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-gradient-to-br from-peach/10 to-primary-light/10 blur-3xl"
-            style={{ animation: "blob-drift-1 30s ease-in-out infinite reverse" }}
-          />
-        </div>
-
-        {/* Decorative floating hearts */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <HeartIcon
-            className="absolute right-[15%] top-[18%] h-5 w-5 text-primary/15"
-          />
-          <HeartIcon
-            className="absolute left-[12%] top-[35%] h-4 w-4 text-peach/30"
-          />
-          <HeartIcon
-            className="absolute bottom-[25%] right-[22%] h-6 w-6 text-primary-light/20"
+            className="absolute -bottom-40 -left-40 h-[500px] w-[500px] rounded-full bg-gradient-to-br from-accent-light/20 to-primary/10 blur-[100px]"
+            style={{ animation: "blob-drift-2 28s ease-in-out infinite" }}
           />
         </div>
 
         <motion.div
-          className="relative mx-auto max-w-2xl text-center md:max-w-3xl"
+          className="relative mx-auto max-w-3xl text-center"
           initial="hidden"
           animate="visible"
           variants={staggerContainer}
         >
-          {/* Badge */}
-          <motion.div custom={0} variants={fadeUp} className="mb-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/60 px-5 py-2.5 text-sm font-medium text-primary shadow-sm backdrop-blur-md">
-              <HeartIcon className="h-3.5 w-3.5" />
-              The matchmaking app for mothers who know best
-            </span>
-          </motion.div>
+          {/* Handwritten pre-header */}
+          <motion.p
+            custom={0}
+            variants={fadeUp}
+            className="mb-6 font-handwritten text-2xl text-accent sm:text-3xl"
+          >
+            &ldquo;I know just the person...&rdquo;
+          </motion.p>
 
-          {/* Headline */}
+          {/* Main headline */}
           <motion.h1
             custom={1}
             variants={fadeUp}
-            className="mb-6 font-display text-5xl leading-[1.1] tracking-tight text-text-primary sm:text-6xl md:text-7xl"
+            className="mb-8 font-display text-5xl leading-[1.08] tracking-tight text-text-primary sm:text-6xl md:text-7xl lg:text-8xl"
           >
-            You know someone
-            <br />
-            perfect for someone.{" "}
-            <em className="bg-gradient-to-r from-primary to-primary-light bg-clip-text pr-2 text-transparent">
-              We&apos;ll help you make the introduction.
+            The matchmaking app{" "}
+            <em className="bg-gradient-to-r from-primary via-primary to-primary-deep bg-clip-text text-transparent">
+              for mothers who
+            </em>{" "}
+            <em className="bg-gradient-to-r from-primary via-primary to-primary-deep bg-clip-text text-transparent">
+              know best.
             </em>
           </motion.h1>
 
-          {/* Subheadline */}
+          {/* Subhead */}
           <motion.p
             custom={2}
             variants={fadeUp}
-            className="mx-auto mb-10 max-w-lg text-lg leading-relaxed text-text-secondary sm:text-xl"
+            className="mx-auto mb-12 max-w-xl text-lg leading-relaxed text-text-secondary sm:text-xl"
           >
-            You Too Should Meet is where mothers, grandmothers, and friends
-            who just KNOW come to play matchmaker. No profiles. No swiping.
-            Just your good instincts.
+            You Two Should Meet is where Jewish mothers, grandmothers, and
+            friends who just <em className="font-medium text-text-primary">know</em>{" "}
+            come together to do what they do best — set people up.
+            No swiping. No algorithms. Just your good instincts and
+            a little <em className="font-medium text-text-primary">chutzpah</em>.
           </motion.p>
 
           {/* CTA */}
-          <motion.div custom={3} variants={fadeUp} className="mb-4">
-            <CTAButton />
+          <motion.div custom={3} variants={fadeUp} className="mb-5">
+            <CTAButton large />
           </motion.div>
 
           <motion.p custom={4} variants={fadeUp} className="text-sm text-text-tertiary">
-            Be first to know when we launch
+            Be the first to know when we launch. Your mother would be so proud.
           </motion.p>
         </motion.div>
       </section>
 
-      {/* ═══ SOCIAL PROOF BAR ═══ */}
+      {/* ═══════════════════════════════════════════════════
+           ROTATING GUILT TRIP BAR
+         ═══════════════════════════════════════════════════ */}
       <motion.section
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: "-80px" }}
         variants={scrollReveal}
-        className="border-y border-primary/10 bg-card/50"
+        className="relative overflow-hidden border-y border-accent/20 bg-cream py-10"
       >
-        <div className="mx-auto grid max-w-4xl grid-cols-1 divide-y divide-primary/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {[
-            { stat: "100%", label: "Mother-approved" },
-            { stat: "0", label: "Algorithms" },
-            { stat: "\u2665", label: "Powered by love (and a little guilt)" },
-          ].map((item) => (
-            <div key={item.label} className="flex flex-col items-center gap-1.5 px-6 py-8">
-              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text font-display text-4xl text-transparent">
-                {item.stat}
-              </span>
-              <span className="text-sm font-medium text-text-secondary">{item.label}</span>
-            </div>
-          ))}
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent/60">
+            Things your mother has definitely said
+          </p>
+          <RotatingQuote />
         </div>
       </motion.section>
 
-      {/* ═══ HOW IT WORKS — BENTO GRID ═══ */}
-      <section className="px-6 py-20 sm:py-28">
+      {/* ═══════════════════════════════════════════════════
+           THE TEXT THREAD — Show don't tell
+         ═══════════════════════════════════════════════════ */}
+      <section className="px-6 py-24 sm:py-32">
         <div className="mx-auto max-w-5xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             variants={scrollReveal}
-            className="mb-14 text-center"
+            className="mb-6 text-center"
           >
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary/60">
-              How it works
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-primary/50">
+              A true story (more or less)
             </p>
-            <h2 className="font-display text-4xl text-text-primary sm:text-5xl">
-              Three steps. Zero swiping.
+            <h2 className="mb-4 font-display text-4xl text-text-primary sm:text-5xl">
+              You know exactly how this goes.
             </h2>
           </motion.div>
 
-          {/* Bento grid */}
-          <div className="grid gap-5 sm:grid-cols-2">
-            {/* Step 1 — tall card, spans 2 rows */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              variants={scrollReveal}
-              className="relative overflow-hidden rounded-3xl border border-white/40 bg-white/70 p-8 shadow-lg backdrop-blur-sm sm:row-span-2 sm:p-10"
-            >
-              <span className="absolute right-6 top-4 font-display text-8xl text-primary/[0.07]">01</span>
-              <div className="relative">
-                <div className="mb-5">
-                  <PhoneIllustration />
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={scrollReveal}
+          >
+            <div className="mx-auto max-w-md rounded-[2.5rem] border border-black/10 bg-white p-6 pt-10 shadow-2xl shadow-black/10">
+              {/* Phone status bar */}
+              <div className="mb-4 flex items-center justify-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-gradient-to-br from-primary to-accent-light text-center text-xs font-bold leading-8 text-white">
+                  M
                 </div>
-                <h3 className="mb-3 font-display text-2xl text-text-primary">
-                  Post someone who&apos;s looking
-                </h3>
-                <p className="text-base leading-relaxed text-text-secondary">
-                  Know someone who&apos;s single? Post a little about them &mdash;
-                  their personality, what they&apos;re looking for, what makes them
-                  special. (Yes, you can mention they&apos;re a doctor.)
-                </p>
+                <span className="text-sm font-semibold text-text-primary">Mom</span>
               </div>
-            </motion.div>
+              <TextThread />
+            </div>
+          </motion.div>
 
-            {/* Step 2 — wide card */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              variants={{
-                hidden: { opacity: 0, y: 32 },
-                visible: { opacity: 1, y: 0, transition: { delay: 0.1, duration: 0.7, ease } },
-              }}
-              className="relative overflow-hidden rounded-3xl border border-white/40 bg-white/70 p-8 shadow-lg backdrop-blur-sm"
-            >
-              <span className="absolute right-6 top-4 font-display text-8xl text-primary/[0.07]">02</span>
-              <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center">
-                <div className="shrink-0">
-                  <MessageIllustration />
-                </div>
-                <div>
-                  <h3 className="mb-2 font-display text-2xl text-text-primary">
-                    Browse and suggest matches
-                  </h3>
-                  <p className="text-base leading-relaxed text-text-secondary">
-                    See someone on the feed and immediately think &ldquo;I know
-                    JUST the person&rdquo;? That&apos;s your cue. Suggest the match
-                    and let the magic happen.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+          <motion.p
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-40px" }}
+            variants={scrollReveal}
+            className="mt-10 text-center font-handwritten text-2xl text-accent"
+          >
+            Now imagine she had an app for this. Terrifying? Maybe. Effective? Absolutely.
+          </motion.p>
+        </div>
+      </section>
 
-            {/* Step 3 — wide card */}
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, margin: "-60px" }}
-              variants={{
-                hidden: { opacity: 0, y: 32 },
-                visible: { opacity: 1, y: 0, transition: { delay: 0.2, duration: 0.7, ease } },
-              }}
-              className="relative overflow-hidden rounded-3xl border border-white/40 bg-white/70 p-8 shadow-lg backdrop-blur-sm"
-            >
-              <span className="absolute right-6 top-4 font-display text-8xl text-primary/[0.07]">03</span>
-              <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center">
-                <div className="shrink-0">
-                  <ConnectionIllustration />
-                </div>
-                <div>
-                  <h3 className="mb-2 font-display text-2xl text-text-primary">
-                    Both say yes, mazel tov!
-                  </h3>
-                  <p className="text-base leading-relaxed text-text-secondary">
-                    When two yentas agree on a match, both singles get a text.
-                    If they both say yes &mdash; everyone gets to kvell.
-                  </p>
-                </div>
-              </div>
-            </motion.div>
+      {/* Gold divider */}
+      <div className="gold-divider mx-auto w-2/3 max-w-md" />
+
+      {/* ═══════════════════════════════════════════════════
+           HOW IT WORKS — Three Steps
+         ═══════════════════════════════════════════════════ */}
+      <section className="px-6 py-24 sm:py-32">
+        <div className="mx-auto max-w-5xl">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={scrollReveal}
+            className="mb-16 text-center"
+          >
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-accent/60">
+              How it works
+            </p>
+            <h2 className="mb-4 font-display text-4xl text-text-primary sm:text-5xl">
+              Three steps. Zero swiping.
+              <br />
+              <span className="font-handwritten text-3xl text-accent sm:text-4xl">
+                Endless kvelling.
+              </span>
+            </h2>
+          </motion.div>
+
+          <div className="grid gap-6 sm:grid-cols-3">
+            <StepCard
+              number="01"
+              title="Post someone who's looking"
+              description="Know someone single? Post a little about them — their personality, what makes them special. Yes, you can mention they're a doctor. We'd be disappointed if you didn't."
+              accent="#D4A574"
+              delay={0}
+            />
+            <StepCard
+              number="02"
+              title="Browse & suggest a match"
+              description="See someone on the feed and think 'I know JUST the person'? Suggest the match. You don't even need to know someone who's looking — just browse and jump in when inspiration strikes."
+              accent="#E8636F"
+              delay={0.1}
+            />
+            <StepCard
+              number="03"
+              title="Both say yes? Mazel tov!"
+              description="When two yentas agree on a match, both singles get a text. If they both say yes — everyone gets to kvell. Especially you."
+              accent="#C4944A"
+              delay={0.2}
+            />
           </div>
         </div>
       </section>
 
-      {/* ═══ THE STORY — Before / After / Bridge ═══ */}
-      <section className="relative px-6 py-20 sm:py-28">
-        {/* Subtle background shift */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
+      {/* ═══════════════════════════════════════════════════
+           THE PITCH — For the born matchmaker
+         ═══════════════════════════════════════════════════ */}
+      <section className="linen-texture relative px-6 py-24 sm:py-32">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-warm-bg/80 via-warm-bg to-warm-bg/80" />
 
-        <div className="relative mx-auto max-w-3xl">
-          <motion.p
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={scrollReveal}
-            className="mb-16 text-center text-xs font-semibold uppercase tracking-[0.2em] text-primary/60"
-          >
-            Nu? You know the feeling.
-          </motion.p>
-
-          {/* Decorative connecting line (desktop) */}
-          <div className="pointer-events-none absolute bottom-20 left-1/2 top-28 hidden w-px -translate-x-1/2 bg-gradient-to-b from-primary/10 via-primary/20 to-primary/5 sm:block" />
-
-          {/* BEFORE */}
+        <div className="relative mx-auto max-w-4xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             variants={scrollReveal}
-            className="relative mb-20 text-center"
+            className="text-center"
           >
-            <h3 className="mb-6 font-display text-3xl text-text-primary sm:text-4xl">
-              Every mother has said it.
-            </h3>
-            <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-text-secondary">
-              You&apos;re at temple, or brunch, or your weekly call, and you
-              hear someone&apos;s kid is single. And you IMMEDIATELY think of
-              someone perfect. You can see it so clearly. The only problem?
-              There&apos;s no good way to make it happen.
+            <p className="mb-4 text-xs font-semibold uppercase tracking-[0.25em] text-accent/60">
+              This app was built for you
             </p>
-            {/* Crossed-out cliches */}
-            <div className="flex flex-wrap justify-center gap-3">
-              {["Swipe right", "It's a match!", "Ghosted again", "Still on the apps"].map((text) => (
-                <span
-                  key={text}
-                  className="rounded-full bg-text-primary/[0.04] px-4 py-2 text-sm text-text-tertiary line-through decoration-primary/40 decoration-2"
-                >
-                  {text}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* AFTER */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={scrollReveal}
-            className="relative mb-20 text-center"
-          >
-            <h3 className="mb-6 font-display text-3xl text-text-primary sm:text-4xl">
-              But what if you could just say...
-            </h3>
-            {/* iMessage bubble */}
-            <div className="mb-8 flex justify-center">
-              <div className="relative inline-block rotate-1 transform">
-                <div className="rounded-2xl bg-gradient-to-br from-[#34C759] to-[#2DB84D] px-6 py-3.5 shadow-lg shadow-[#34C759]/20">
-                  <p className="text-base font-medium text-white sm:text-lg">
-                    &ldquo;I know JUST the person for your David!&rdquo;
-                  </p>
-                </div>
-                {/* Bubble tail */}
-                <div className="absolute -bottom-2 left-6 h-4 w-4 rotate-45 transform rounded-sm bg-[#2DB84D]" />
-              </div>
-            </div>
-            <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
-              That instinct you have? The one where you just{" "}
-              <em className="text-text-primary">know</em> two people belong together?
-              That&apos;s what we built an app for.
-            </p>
-          </motion.div>
-
-          {/* BRIDGE */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={scrollReveal}
-            className="relative rounded-3xl bg-gradient-to-br from-primary/[0.04] to-peach/[0.06] p-8 text-center sm:p-12"
-          >
-            <h3 className="mb-6 font-display text-3xl sm:text-4xl">
-              <span className="bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-                That instinct? That&apos;s what we built an app for.
-              </span>
-            </h3>
-            <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
-              You Too Should Meet turns your matchmaking instincts into actual
-              introductions. Post someone who&apos;s looking, suggest a match for
-              someone else, or just browse and wait for that &ldquo;AHA!&rdquo; moment.
-              <br /><br />
-              <span className="font-medium text-text-primary">
-                No swiping. No algorithms. Just mothers, grandmothers, and friends
-                who know a bashert when they see one.
-              </span>
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ═══ MATCHMAKER SECTION ═══ */}
-      <section className="relative px-6 py-20 sm:py-28">
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-accent/[0.03] to-transparent" />
-
-        <div className="relative mx-auto max-w-5xl">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={scrollReveal}
-            className="mb-14 text-center"
-          >
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-accent/60">
-              Born to set people up?
-            </p>
-            <h2 className="mb-5 font-display text-4xl text-text-primary sm:text-5xl">
-              Some people just <em className="bg-gradient-to-r from-accent to-primary bg-clip-text text-transparent">know</em>
-              <br />who belongs together
+            <h2 className="mb-6 font-display text-4xl text-text-primary sm:text-5xl">
+              You see two people and you just{" "}
+              <em className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                know.
+              </em>
             </h2>
-            <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
-              If you&apos;re the bubbe who&apos;s always got someone in mind, the mother
-              who sees connections others miss, the friend who says &ldquo;you two
-              should meet&rdquo; at every dinner party &mdash; this app was built for you.
-              You don&apos;t even need to have someone specific. Just browse and help others.
+            <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-text-secondary">
+              You&apos;re the one at every dinner party saying &ldquo;you two should
+              meet.&rdquo; You&apos;re the bubbe who has &ldquo;a lovely girl&rdquo; in
+              mind for every single boy in the congregation. You&apos;re the friend
+              who texts &ldquo;I have someone for you&rdquo; before dessert arrives.
             </p>
           </motion.div>
 
+          {/* Feature cards */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={scrollReveal}
-            className="rounded-3xl bg-gradient-to-br from-accent/20 to-primary/15 p-px shadow-2xl shadow-accent/5"
+            className="grid gap-6 sm:grid-cols-2"
           >
-            <div className="rounded-3xl bg-card p-8 sm:p-10">
-              <div className="grid gap-8 sm:grid-cols-3">
-                {[
-                  {
-                    emoji: "\uD83D\uDCDD",
-                    title: "Post your people",
-                    desc: "Tell us who you want to set up \u2014 your daughter, your nephew, your neighbor\u2019s lovely son who deserves someone wonderful.",
-                  },
-                  {
-                    emoji: "\uD83D\uDCA1",
-                    title: "Suggest matches",
-                    desc: "See someone on the feed and think \u201CI know JUST the person\u201D? Suggest the match. We handle the rest.",
-                  },
-                  {
-                    emoji: "\uD83C\uDF89",
-                    title: "Celebrate the wins",
-                    desc: "When your match leads to a date \u2014 or a wedding \u2014 everyone gets to kvell. Especially you.",
-                  },
-                ].map((step) => (
-                  <div key={step.title} className="text-center">
-                    <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-accent/10 to-primary/10 text-2xl">
-                      {step.emoji}
-                    </div>
-                    <h4 className="mb-2 font-semibold text-text-primary">{step.title}</h4>
-                    <p className="text-sm leading-relaxed text-text-secondary">{step.desc}</p>
-                  </div>
-                ))}
+            {[
+              {
+                icon: "✍️",
+                title: "Post your people",
+                desc: "Your daughter, your nephew, your neighbor's lovely son who deserves someone wonderful. Tell the world — or at least the other yentas.",
+              },
+              {
+                icon: "💡",
+                title: "See a match? Say something!",
+                desc: "Scroll the feed. When that lightbulb goes off and you think \"I know JUST the person\" — that's your cue.",
+              },
+              {
+                icon: "🤝",
+                title: "Two yentas. One match.",
+                desc: "When you and another yenta both agree it's meant to be, both singles get a text. From there, it's bashert.",
+              },
+              {
+                icon: "🏆",
+                title: "Climb the leaderboard",
+                desc: "The most active yentas earn bragging rights. Finally, competitive matchmaking with stakes your mother-in-law will respect.",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl border border-accent/10 bg-white/80 p-7 shadow-md backdrop-blur-sm transition-all duration-300 hover:shadow-lg hover:shadow-accent/5"
+              >
+                <span className="mb-4 block text-3xl">{item.icon}</span>
+                <h4 className="mb-2 text-lg font-semibold text-text-primary">{item.title}</h4>
+                <p className="text-sm leading-relaxed text-text-secondary">{item.desc}</p>
               </div>
-
-              <div className="mt-10 text-center">
-                <CTAButton />
-                <p className="mt-3 text-sm text-text-tertiary">
-                  Join the yenta circle and start making matches
-                </p>
-              </div>
-            </div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ═══ TRUST / PRIVACY ═══ */}
-      <section className="px-6 py-20 sm:py-28">
+      {/* ═══════════════════════════════════════════════════
+           TRUST — Your bubbe raised us right
+         ═══════════════════════════════════════════════════ */}
+      <section className="px-6 py-24 sm:py-32">
         <div className="mx-auto max-w-4xl">
           <motion.div
             initial="hidden"
@@ -538,81 +467,71 @@ export default function Home() {
             variants={scrollReveal}
             className="mb-14 text-center"
           >
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary/60">
-              Built different
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.25em] text-primary/50">
+              Built with mentshlekhkayt
             </p>
             <h2 className="mb-5 font-display text-4xl text-text-primary sm:text-5xl">
-              Your trust is the whole point
+              Your bubbe raised us better than that.
             </h2>
             <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
-              We don&apos;t want you scrolling forever. We want you to make a
-              match and kvell about it at brunch. That&apos;s not just a tagline
-              &mdash; it&apos;s how we built this.
+              No data selling. No creepy algorithms. No endless scrolling designed
+              to keep you hooked. We want you to make a match and kvell about it
+              at brunch.
             </p>
           </motion.div>
 
-          {/* Gradient-bordered card */}
           <motion.div
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, margin: "-60px" }}
             variants={scrollReveal}
-            className="rounded-3xl bg-gradient-to-br from-primary/20 to-accent/15 p-px shadow-2xl shadow-primary/5"
+            className="grid gap-5 sm:grid-cols-2"
           >
-            <div className="rounded-3xl bg-card p-8 sm:p-10">
-              <div className="grid gap-8 sm:grid-cols-2">
-                {[
-                  {
-                    icon: <ShieldIcon className="h-6 w-6 text-primary" />,
-                    title: "No data selling",
-                    desc: "We\u2019d never. Your bubbe raised us better than that.",
-                  },
-                  {
-                    icon: <LockIcon className="h-6 w-6 text-primary" />,
-                    title: "Private by design",
-                    desc: "Token-based links. No public profiles. What happens in the app stays in the app.",
-                  },
-                  {
-                    icon: <HeartHandIcon className="h-6 w-6 text-primary" />,
-                    title: "Singles stay in control",
-                    desc: "Nobody gets contacted without a chance to say yes or no. We\u2019re persistent, not pushy.",
-                  },
-                  {
-                    icon: <SparklesIcon className="h-6 w-6 text-primary" />,
-                    title: "Built to be deleted",
-                    desc: "Success means you made a match. We\u2019re rooting for everyone.",
-                  },
-                ].map((badge) => (
-                  <div key={badge.title} className="flex gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10">
-                      {badge.icon}
-                    </div>
-                    <div>
-                      <h4 className="mb-1 font-semibold text-text-primary">{badge.title}</h4>
-                      <p className="text-sm leading-relaxed text-text-secondary">{badge.desc}</p>
-                    </div>
-                  </div>
-                ))}
+            {[
+              {
+                title: "No data selling. Ever.",
+                desc: "We don't sell your information. We don't share it with advertisers. We'd never.",
+                icon: "🛡️",
+              },
+              {
+                title: "Private by design",
+                desc: "Token-based links. No public profiles. No one's browsing your kid's info without a yenta vouching for it.",
+                icon: "🔒",
+              },
+              {
+                title: "Singles stay in control",
+                desc: "Nobody gets contacted without choosing to. Accept or decline — always their call. We're persistent, not pushy.",
+                icon: "💕",
+              },
+              {
+                title: "Built to be deleted",
+                desc: "Success means you made a match and put us out of business. We're rooting for that.",
+                icon: "✨",
+              },
+            ].map((item) => (
+              <div
+                key={item.title}
+                className="flex gap-4 rounded-2xl border border-primary/8 bg-white p-6 shadow-sm"
+              >
+                <span className="mt-0.5 text-2xl">{item.icon}</span>
+                <div>
+                  <h4 className="mb-1 font-semibold text-text-primary">{item.title}</h4>
+                  <p className="text-sm leading-relaxed text-text-secondary">{item.desc}</p>
+                </div>
               </div>
-            </div>
+            ))}
           </motion.div>
         </div>
       </section>
 
-      {/* ═══ FINAL CTA ═══ */}
-      <section className="relative px-6 py-20 sm:py-28">
-        {/* Background glow */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-primary/[0.03] via-transparent to-accent/[0.03]" />
+      {/* Gold divider */}
+      <div className="gold-divider mx-auto w-2/3 max-w-md" />
 
-        {/* Floating decorative hearts */}
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <HeartIcon
-            className="absolute left-[18%] top-[20%] h-5 w-5 text-primary/10"
-          />
-          <HeartIcon
-            className="absolute bottom-[30%] right-[15%] h-4 w-4 text-peach/20"
-          />
-        </div>
+      {/* ═══════════════════════════════════════════════════
+           FINAL CTA — The closer
+         ═══════════════════════════════════════════════════ */}
+      <section className="linen-texture relative px-6 py-28 sm:py-36">
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-accent/[0.03]" />
 
         <motion.div
           initial="hidden"
@@ -621,14 +540,24 @@ export default function Home() {
           variants={scrollReveal}
           className="relative mx-auto max-w-2xl text-center"
         >
-          <h2 className="mb-5 font-display text-4xl text-text-primary sm:text-5xl">
+          <p className="mb-6 font-handwritten text-2xl text-accent sm:text-3xl">
+            Nu? What are you waiting for?
+          </p>
+          <h2 className="mb-6 font-display text-5xl text-text-primary sm:text-6xl">
             Your mother was right.
-            <br />She usually is.
+            <br />
+            <span className="bg-gradient-to-r from-primary to-primary-deep bg-clip-text text-transparent">
+              She usually is.
+            </span>
           </h2>
           <p className="mb-10 text-lg text-text-secondary">
             Be first to know when we launch.
+            <br />
+            <span className="font-medium text-text-primary">
+              She&apos;ll tell everyone at temple either way.
+            </span>
           </p>
-          <CTAButton />
+          <CTAButton large />
         </motion.div>
       </section>
     </div>

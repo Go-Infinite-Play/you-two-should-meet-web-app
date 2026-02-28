@@ -3,18 +3,24 @@
 @theme inline {
   --color-primary: #E8636F;
   --color-primary-light: #F2949B;
-  --color-accent: #8B5CF6;
-  --color-background: #FBF7F4;
+  --color-primary-deep: #C94F5A;
+  --color-accent: #D4A574;
+  --color-accent-light: #E8C9A0;
+  --color-gold: #C4944A;
+  --color-background: #FDF8F3;
   --color-card: #FFFFFF;
-  --color-text-primary: #1A1A2E;
-  --color-text-secondary: #6B7280;
-  --color-text-tertiary: #9CA3AF;
+  --color-cream: #FFF9F0;
+  --color-warm-bg: #F7EDE2;
+  --color-text-primary: #2D1B12;
+  --color-text-secondary: #7A6B5D;
+  --color-text-tertiary: #A89888;
   --color-success: #34D399;
   --color-error: #EF4444;
   --color-warning: #FBBF24;
   --color-peach: #FBBF8A;
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-display: "Instrument Serif", "Georgia", "Times New Roman", serif;
+  --font-handwritten: "Caveat", cursive;
 }
 
 body {
@@ -48,7 +54,21 @@ body {
   50% { transform: translateY(-10px) rotate(-2deg); }
 }
 
-/* Subtle grain texture overlay */
+/* Rotating quotes */
+@keyframes rotate-quote {
+  0%, 18% { opacity: 1; transform: translateY(0); }
+  20%, 22% { opacity: 0; transform: translateY(-10px); }
+  24%, 98% { opacity: 0; transform: translateY(10px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Subtle shimmer for gold elements */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+/* Grain texture */
 @keyframes grain {
   0%, 100% { transform: translate(0, 0); }
   10% { transform: translate(-5%, -10%); }
@@ -56,4 +76,21 @@ body {
   50% { transform: translate(12%, 9%); }
   70% { transform: translate(9%, 4%); }
   90% { transform: translate(-1%, 7%); }
+}
+
+/* Linen texture via pseudo-element */
+.linen-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  background-image: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23D4A574' fill-opacity='0.08'%3E%3Cpath d='M0 0h1v1H0zM4 4h1v1H4zM8 0h1v1H8zM0 8h1v1H0zM8 8h1v1H8zM16 0h1v1h-1zM16 8h1v1h-1zM24 0h1v1h-1zM24 8h1v1h-1zM32 0h1v1h-1zM32 8h1v1h-1zM0 16h1v1H0zM4 12h1v1H4zM8 16h1v1H8zM16 16h1v1h-1zM24 16h1v1h-1zM32 16h1v1h-1zM0 24h1v1H0zM8 24h1v1H8zM16 24h1v1h-1zM24 24h1v1h-1zM32 24h1v1h-1zM0 32h1v1H0zM4 28h1v1H4zM8 32h1v1H8zM16 32h1v1h-1zM24 32h1v1h-1zM32 32h1v1h-1zM4 20h1v1H4zM12 4h1v1h-1zM20 4h1v1h-1zM28 4h1v1h-1zM36 4h1v1h-1zM12 12h1v1h-1zM20 12h1v1h-1zM28 12h1v1h-1zM36 12h1v1h-1zM12 20h1v1h-1zM20 20h1v1h-1zM28 20h1v1h-1zM36 20h1v1h-1zM4 36h1v1H4zM12 28h1v1h-1zM20 28h1v1h-1zM28 28h1v1h-1zM36 28h1v1h-1zM12 36h1v1h-1zM20 36h1v1h-1zM28 36h1v1h-1zM36 36h1v1h-1z'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gold divider */
+.gold-divider {
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #D4A574, transparent);
 }
