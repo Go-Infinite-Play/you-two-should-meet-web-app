@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 
 /* ─── Animation variants ─── */
@@ -181,7 +180,7 @@ export default function Home() {
           <motion.div custom={0} variants={fadeUp} className="mb-8">
             <span className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/60 px-5 py-2.5 text-sm font-medium text-primary shadow-sm backdrop-blur-md">
               <HeartIcon className="h-3.5 w-3.5" />
-              Friends, not algorithms
+              The matchmaking app for mothers who know best
             </span>
           </motion.div>
 
@@ -191,11 +190,11 @@ export default function Home() {
             variants={fadeUp}
             className="mb-6 font-display text-5xl leading-[1.1] tracking-tight text-text-primary sm:text-6xl md:text-7xl"
           >
-            The best relationships
+            You know someone
             <br />
-            start with{" "}
+            perfect for someone.{" "}
             <em className="bg-gradient-to-r from-primary to-primary-light bg-clip-text pr-2 text-transparent">
-              &ldquo;you two should meet&rdquo;
+              We&apos;ll help you make the introduction.
             </em>
           </motion.h1>
 
@@ -205,8 +204,9 @@ export default function Home() {
             variants={fadeUp}
             className="mx-auto mb-10 max-w-lg text-lg leading-relaxed text-text-secondary sm:text-xl"
           >
-            Your friends already know who you&apos;d be perfect with.
-            We just make it easy for them to set you up.
+            You Too Should Meet is where mothers, grandmothers, and friends
+            who just KNOW come to play matchmaker. No profiles. No swiping.
+            Just your good instincts.
           </motion.p>
 
           {/* CTA */}
@@ -230,11 +230,11 @@ export default function Home() {
       >
         <div className="mx-auto grid max-w-4xl grid-cols-1 divide-y divide-primary/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
           {[
-            { stat: "100%", label: "Friend-vetted matches" },
-            { stat: "0", label: "Swipes required" },
-            { stat: "1", label: "Great person is all it takes" },
+            { stat: "100%", label: "Mother-approved" },
+            { stat: "0", label: "Algorithms" },
+            { stat: "\u2665", label: "Powered by love (and a little guilt)" },
           ].map((item) => (
-            <div key={item.stat} className="flex flex-col items-center gap-1.5 px-6 py-8">
+            <div key={item.label} className="flex flex-col items-center gap-1.5 px-6 py-8">
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text font-display text-4xl text-transparent">
                 {item.stat}
               </span>
@@ -278,12 +278,12 @@ export default function Home() {
                   <PhoneIllustration />
                 </div>
                 <h3 className="mb-3 font-display text-2xl text-text-primary">
-                  Tell your friends
+                  Post someone who&apos;s looking
                 </h3>
                 <p className="text-base leading-relaxed text-text-secondary">
-                  Download the app, set your preferences, and invite the friends
-                  who actually know your type. The ones who&apos;ve been saying
-                  &ldquo;I know someone perfect for you&rdquo; for years.
+                  Know someone who&apos;s single? Post a little about them &mdash;
+                  their personality, what they&apos;re looking for, what makes them
+                  special. (Yes, you can mention they&apos;re a doctor.)
                 </p>
               </div>
             </motion.div>
@@ -306,11 +306,12 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="mb-2 font-display text-2xl text-text-primary">
-                    They find someone perfect
+                    Browse and suggest matches
                   </h3>
                   <p className="text-base leading-relaxed text-text-secondary">
-                    Your friend thinks of someone great, writes a personal pitch
-                    about why you&apos;d click, and sends it along.
+                    See someone on the feed and immediately think &ldquo;I know
+                    JUST the person&rdquo;? That&apos;s your cue. Suggest the match
+                    and let the magic happen.
                   </p>
                 </div>
               </div>
@@ -334,102 +335,17 @@ export default function Home() {
                 </div>
                 <div>
                   <h3 className="mb-2 font-display text-2xl text-text-primary">
-                    Both say yes, you connect
+                    Both say yes, mazel tov!
                   </h3>
                   <p className="text-base leading-relaxed text-text-secondary">
-                    If you&apos;re both interested, you get each other&apos;s number.
-                    A real connection from someone who knows you.
+                    When two yentas agree on a match, both singles get a text.
+                    If they both say yes &mdash; everyone gets to kvell.
                   </p>
                 </div>
               </div>
             </motion.div>
           </div>
         </div>
-      </section>
-
-      {/* ═══ APP SHOWCASE ═══ */}
-      <section className="relative overflow-hidden px-6 py-20 sm:py-28">
-        {/* Subtle gradient bg */}
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent via-primary/[0.02] to-transparent" />
-
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-80px" }}
-          variants={scrollReveal}
-          className="relative mb-14 text-center"
-        >
-          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary/60">
-            See the app
-          </p>
-          <h2 className="font-display text-4xl text-text-primary sm:text-5xl">
-            Simple by design
-          </h2>
-        </motion.div>
-
-        {/* Phone fan layout */}
-        <div className="relative mx-auto flex max-w-4xl items-center justify-center gap-4 sm:gap-8 md:gap-10">
-          {[
-            { src: "/screenshots/welcome.png", alt: "Welcome screen", rotate: "-6deg", delay: 0 },
-            { src: "/screenshots/matchmakers.png", alt: "Pick your matchmakers", rotate: "0deg", delay: 0.1 },
-            { src: "/screenshots/success.png", alt: "You're all set", rotate: "6deg", delay: 0.2 },
-          ].map((phone) => (
-            <motion.div
-              key={phone.src}
-              initial={{ opacity: 0, y: 48, rotate: 0 }}
-              whileInView={{ opacity: 1, y: 0, rotate: phone.rotate }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ delay: phone.delay, duration: 0.8, ease }}
-              className="relative w-[30%] max-w-[240px] shrink-0"
-            >
-              {/* iPhone frame — titanium bezel with realistic proportions */}
-              <div className="relative rounded-[2rem] bg-gradient-to-b from-[#E3E2DD] via-[#D6D5D0] to-[#C8C7C2] p-[3px] shadow-[0_25px_60px_-12px_rgba(0,0,0,0.25),0_0_0_1px_rgba(0,0,0,0.08)] sm:rounded-[2.5rem] sm:p-1">
-                {/* Inner bezel edge */}
-                <div className="rounded-[calc(2rem-3px)] bg-[#1C1C1E] p-[2px] sm:rounded-[calc(2.5rem-4px)] sm:p-[2.5px]">
-                  {/* Screen area */}
-                  <div className="relative overflow-hidden rounded-[calc(2rem-5px)] bg-background sm:rounded-[calc(2.5rem-6.5px)]">
-                    {/* Dynamic Island */}
-                    <div className="absolute left-1/2 top-[6px] z-10 h-[10px] w-[28%] -translate-x-1/2 rounded-full bg-black sm:top-[8px] sm:h-[13px]" />
-                    {/* Screenshot */}
-                    <div className="relative aspect-[393/852] w-full">
-                      <Image
-                        src={phone.src}
-                        alt={phone.alt}
-                        fill
-                        className="object-cover object-top"
-                        sizes="240px"
-                      />
-                    </div>
-                  </div>
-                </div>
-                {/* Side button (power) */}
-                <div className="absolute -right-[2px] top-[22%] h-[10%] w-[3px] rounded-r-full bg-[#D6D5D0] sm:-right-[3px] sm:w-[3.5px]" />
-                {/* Volume buttons */}
-                <div className="absolute -left-[2px] top-[18%] h-[6%] w-[3px] rounded-l-full bg-[#D6D5D0] sm:-left-[3px] sm:w-[3.5px]" />
-                <div className="absolute -left-[2px] top-[26%] h-[6%] w-[3px] rounded-l-full bg-[#D6D5D0] sm:-left-[3px] sm:w-[3.5px]" />
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Captions */}
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-40px" }}
-          variants={scrollReveal}
-          className="mx-auto mt-10 flex max-w-3xl justify-between px-4 sm:mt-14 sm:px-8"
-        >
-          {[
-            "Open the app",
-            "Choose your matchmakers",
-            "You\u2019re all set!",
-          ].map((caption) => (
-            <p key={caption} className="flex-1 text-center text-xs font-medium text-text-secondary sm:text-sm">
-              {caption}
-            </p>
-          ))}
-        </motion.div>
       </section>
 
       {/* ═══ THE STORY — Before / After / Bridge ═══ */}
@@ -445,7 +361,7 @@ export default function Home() {
             variants={scrollReveal}
             className="mb-16 text-center text-xs font-semibold uppercase tracking-[0.2em] text-primary/60"
           >
-            The truth about dating
+            Nu? You know the feeling.
           </motion.p>
 
           {/* Decorative connecting line (desktop) */}
@@ -460,17 +376,17 @@ export default function Home() {
             className="relative mb-20 text-center"
           >
             <h3 className="mb-6 font-display text-3xl text-text-primary sm:text-4xl">
-              Dating apps turned finding love
-              <br />into a full-time job
+              Every mother has said it.
             </h3>
             <p className="mx-auto mb-8 max-w-xl text-lg leading-relaxed text-text-secondary">
-              Endless swiping. Curated profiles that don&apos;t match reality.
-              Conversations that go nowhere. You deserve better than being
-              reduced to a photo and a bio.
+              You&apos;re at temple, or brunch, or your weekly call, and you
+              hear someone&apos;s kid is single. And you IMMEDIATELY think of
+              someone perfect. You can see it so clearly. The only problem?
+              There&apos;s no good way to make it happen.
             </p>
             {/* Crossed-out cliches */}
             <div className="flex flex-wrap justify-center gap-3">
-              {["Swipe right →", "It's a match!", "Hey 👋", "wyd tonight"].map((text) => (
+              {["Swipe right", "It's a match!", "Ghosted again", "Still on the apps"].map((text) => (
                 <span
                   key={text}
                   className="rounded-full bg-text-primary/[0.04] px-4 py-2 text-sm text-text-tertiary line-through decoration-primary/40 decoration-2"
@@ -490,15 +406,14 @@ export default function Home() {
             className="relative mb-20 text-center"
           >
             <h3 className="mb-6 font-display text-3xl text-text-primary sm:text-4xl">
-              Imagine if finding someone was
-              <br />as easy as a friend saying
+              But what if you could just say...
             </h3>
             {/* iMessage bubble */}
             <div className="mb-8 flex justify-center">
               <div className="relative inline-block rotate-1 transform">
                 <div className="rounded-2xl bg-gradient-to-br from-[#34C759] to-[#2DB84D] px-6 py-3.5 shadow-lg shadow-[#34C759]/20">
                   <p className="text-base font-medium text-white sm:text-lg">
-                    &ldquo;omg I know someone perfect for you&rdquo;
+                    &ldquo;I know JUST the person for your David!&rdquo;
                   </p>
                 </div>
                 {/* Bubble tail */}
@@ -506,10 +421,9 @@ export default function Home() {
               </div>
             </div>
             <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
-              That&apos;s how the best relationships actually start. A friend
-              who knows your humor, your values, your weird obsession with
-              90s movies — they see someone and just{" "}
-              <em className="text-text-primary">know</em>.
+              That instinct you have? The one where you just{" "}
+              <em className="text-text-primary">know</em> two people belong together?
+              That&apos;s what we built an app for.
             </p>
           </motion.div>
 
@@ -523,89 +437,19 @@ export default function Home() {
           >
             <h3 className="mb-6 font-display text-3xl sm:text-4xl">
               <span className="bg-gradient-to-r from-primary to-primary-light bg-clip-text text-transparent">
-                That&apos;s exactly what we built
+                That instinct? That&apos;s what we built an app for.
               </span>
             </h3>
             <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
-              You Two Should Meet turns your friends into matchmakers. They find
-              someone, write a personal pitch about why you&apos;d click, and if
-              you&apos;re both interested — you connect.
+              You Too Should Meet turns your matchmaking instincts into actual
+              introductions. Post someone who&apos;s looking, suggest a match for
+              someone else, or just browse and wait for that &ldquo;AHA!&rdquo; moment.
               <br /><br />
               <span className="font-medium text-text-primary">
-                No swiping. No algorithms. Just people who love you, finding someone great.
+                No swiping. No algorithms. Just mothers, grandmothers, and friends
+                who know a bashert when they see one.
               </span>
             </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ═══ TRUST / PRIVACY ═══ */}
-      <section className="px-6 py-20 sm:py-28">
-        <div className="mx-auto max-w-4xl">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-80px" }}
-            variants={scrollReveal}
-            className="mb-14 text-center"
-          >
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary/60">
-              Built different
-            </p>
-            <h2 className="mb-5 font-display text-4xl text-text-primary sm:text-5xl">
-              Your trust is the whole point
-            </h2>
-            <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
-              We don&apos;t want you scrolling forever. We want you to meet someone
-              and delete the app. That&apos;s not just a tagline — it&apos;s our
-              business model.
-            </p>
-          </motion.div>
-
-          {/* Gradient-bordered card */}
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-60px" }}
-            variants={scrollReveal}
-            className="rounded-3xl bg-gradient-to-br from-primary/20 to-accent/15 p-px shadow-2xl shadow-primary/5"
-          >
-            <div className="rounded-3xl bg-card p-8 sm:p-10">
-              <div className="grid gap-8 sm:grid-cols-2">
-                {[
-                  {
-                    icon: <ShieldIcon className="h-6 w-6 text-primary" />,
-                    title: "No data selling",
-                    desc: "Your info is never sold or shared with advertisers. Ever.",
-                  },
-                  {
-                    icon: <LockIcon className="h-6 w-6 text-primary" />,
-                    title: "Private by design",
-                    desc: "Token-based links. No accounts to hack. No public profiles.",
-                  },
-                  {
-                    icon: <HeartHandIcon className="h-6 w-6 text-primary" />,
-                    title: "Friends-first filter",
-                    desc: "Every match comes from someone who knows you both.",
-                  },
-                  {
-                    icon: <SparklesIcon className="h-6 w-6 text-primary" />,
-                    title: "Built to be deleted",
-                    desc: "Success means you found someone. We're rooting for you.",
-                  },
-                ].map((badge) => (
-                  <div key={badge.title} className="flex gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10">
-                      {badge.icon}
-                    </div>
-                    <div>
-                      <h4 className="mb-1 font-semibold text-text-primary">{badge.title}</h4>
-                      <p className="text-sm leading-relaxed text-text-secondary">{badge.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
           </motion.div>
         </div>
       </section>
@@ -630,8 +474,10 @@ export default function Home() {
               <br />who belongs together
             </h2>
             <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
-              If you&apos;re the mom who&apos;s always got someone in mind, the friend who sees
-              connections others miss — this app was built for you.
+              If you&apos;re the bubbe who&apos;s always got someone in mind, the mother
+              who sees connections others miss, the friend who says &ldquo;you two
+              should meet&rdquo; at every dinner party &mdash; this app was built for you.
+              You don&apos;t even need to have someone specific. Just browse and help others.
             </p>
           </motion.div>
 
@@ -646,19 +492,19 @@ export default function Home() {
               <div className="grid gap-8 sm:grid-cols-3">
                 {[
                   {
-                    emoji: "👀",
-                    title: "Add your people",
-                    desc: "Tell us who you want to set up — your daughter, your best friend, your coworker who deserves someone great.",
+                    emoji: "\uD83D\uDCDD",
+                    title: "Post your people",
+                    desc: "Tell us who you want to set up \u2014 your daughter, your nephew, your neighbor\u2019s lovely son who deserves someone wonderful.",
                   },
                   {
-                    emoji: "💡",
-                    title: "Make introductions",
-                    desc: "When you think of someone perfect, submit them with a personal pitch. We handle the rest.",
+                    emoji: "\uD83D\uDCA1",
+                    title: "Suggest matches",
+                    desc: "See someone on the feed and think \u201CI know JUST the person\u201D? Suggest the match. We handle the rest.",
                   },
                   {
-                    emoji: "🎉",
-                    title: "Watch the magic",
-                    desc: "Track your intros, earn badges, and celebrate when your people find love — because of you.",
+                    emoji: "\uD83C\uDF89",
+                    title: "Celebrate the wins",
+                    desc: "When your match leads to a date \u2014 or a wedding \u2014 everyone gets to kvell. Especially you.",
                   },
                 ].map((step) => (
                   <div key={step.title} className="text-center">
@@ -674,8 +520,79 @@ export default function Home() {
               <div className="mt-10 text-center">
                 <CTAButton />
                 <p className="mt-3 text-sm text-text-tertiary">
-                  Download the app and become a Legendary Matchmaker
+                  Join the yenta circle and start making matches
                 </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* ═══ TRUST / PRIVACY ═══ */}
+      <section className="px-6 py-20 sm:py-28">
+        <div className="mx-auto max-w-4xl">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-80px" }}
+            variants={scrollReveal}
+            className="mb-14 text-center"
+          >
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-primary/60">
+              Built different
+            </p>
+            <h2 className="mb-5 font-display text-4xl text-text-primary sm:text-5xl">
+              Your trust is the whole point
+            </h2>
+            <p className="mx-auto max-w-xl text-lg leading-relaxed text-text-secondary">
+              We don&apos;t want you scrolling forever. We want you to make a
+              match and kvell about it at brunch. That&apos;s not just a tagline
+              &mdash; it&apos;s how we built this.
+            </p>
+          </motion.div>
+
+          {/* Gradient-bordered card */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-60px" }}
+            variants={scrollReveal}
+            className="rounded-3xl bg-gradient-to-br from-primary/20 to-accent/15 p-px shadow-2xl shadow-primary/5"
+          >
+            <div className="rounded-3xl bg-card p-8 sm:p-10">
+              <div className="grid gap-8 sm:grid-cols-2">
+                {[
+                  {
+                    icon: <ShieldIcon className="h-6 w-6 text-primary" />,
+                    title: "No data selling",
+                    desc: "We\u2019d never. Your bubbe raised us better than that.",
+                  },
+                  {
+                    icon: <LockIcon className="h-6 w-6 text-primary" />,
+                    title: "Private by design",
+                    desc: "Token-based links. No public profiles. What happens in the app stays in the app.",
+                  },
+                  {
+                    icon: <HeartHandIcon className="h-6 w-6 text-primary" />,
+                    title: "Singles stay in control",
+                    desc: "Nobody gets contacted without a chance to say yes or no. We\u2019re persistent, not pushy.",
+                  },
+                  {
+                    icon: <SparklesIcon className="h-6 w-6 text-primary" />,
+                    title: "Built to be deleted",
+                    desc: "Success means you made a match. We\u2019re rooting for everyone.",
+                  },
+                ].map((badge) => (
+                  <div key={badge.title} className="flex gap-4">
+                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10">
+                      {badge.icon}
+                    </div>
+                    <div>
+                      <h4 className="mb-1 font-semibold text-text-primary">{badge.title}</h4>
+                      <p className="text-sm leading-relaxed text-text-secondary">{badge.desc}</p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -705,8 +622,8 @@ export default function Home() {
           className="relative mx-auto max-w-2xl text-center"
         >
           <h2 className="mb-5 font-display text-4xl text-text-primary sm:text-5xl">
-            Set up your friends.
-            <br />Get set up by yours.
+            Your mother was right.
+            <br />She usually is.
           </h2>
           <p className="mb-10 text-lg text-text-secondary">
             Be first to know when we launch.
